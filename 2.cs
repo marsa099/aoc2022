@@ -1,7 +1,7 @@
 public static class Task2
 {
 
-    public static int calcScore(char opponent, char me)
+    public static int calcScore1(char opponent, char me)
     {
         int roundScore = 0;
 
@@ -39,6 +39,44 @@ public static class Task2
         return roundScore;
     }
 
+    public static int calcScore2(char opponent, char result)
+    {
+        int roundScore = 0;
+
+        if (result == 'X') // Loose
+        {
+            roundScore += 0;
+            if (opponent == 'A') // Sten. Loose = Sax = 3
+                roundScore += 3;
+            if (opponent == 'B') // Påse. Loose = Sten = 1
+                roundScore += 1;
+            if (opponent == 'C') // Sax. Loose = Påse = 2
+                roundScore += 2;
+        }
+        else if (result == 'Y') // Draw
+        {
+            roundScore += 3;
+            if (opponent == 'A') // Sten. Draw = Sten = 1
+                roundScore += 1;
+            if (opponent == 'B') // Påse. Draw = Påse = 2
+                roundScore += 2;
+            if (opponent == 'C') // Sax. Draw = Sax = 3
+                roundScore += 3;
+        }
+        else if (result == 'Z') // Win
+        {
+            roundScore += 6;
+            if (opponent == 'A') // Sten. Win = Påse = 2
+                roundScore += 2;
+            if (opponent == 'B') // Påse. Win = Sax = 3
+                roundScore += 3;
+            if (opponent == 'C') // Sax. Win = Sten = 1
+                roundScore += 1;
+        }
+
+        return roundScore;
+    }
+
     public static void Execute()
     {
         var input = File.ReadAllLines("inputs/input-2.txt");
@@ -49,7 +87,7 @@ public static class Task2
             var opponent = line[0];
             var me = line[2];
 
-            total += calcScore(opponent, me);
+            total += calcScore2(opponent, me);
         }
 
         // 1a
