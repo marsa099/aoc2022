@@ -1,11 +1,8 @@
-
-
 public static class Task1
 {
     public static void Execute()
     {
         var input = File.ReadAllLines("inputs/input-1.txt");
-
 
         var allBackpackTotal = new List<int>();
 
@@ -24,7 +21,6 @@ public static class Task1
 
         // 1a
         Console.WriteLine(allBackpackTotal.Max());
-
 
         // 1b
         allBackpackTotal.Sort();
