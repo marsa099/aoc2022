@@ -23,11 +23,12 @@ public static class Task3
         Console.WriteLine("3a: " + total);
         total = 0;
 
+
         foreach (var group in input.Chunk(3))
         {
-            char c = group[0].First(x => 
-                (group[0].Count(a => x == a) >= 1) && 
-                (group[1].Count(y => x == y) >= 1) && 
+            char c = group[0].First(x =>
+                (group[0].Count(a => x == a) >= 1) &&
+                (group[1].Count(y => x == y) >= 1) &&
                 (group[2].Count(z => x == z) >= 1)
             );
 
@@ -39,5 +40,16 @@ public static class Task3
 
         Console.WriteLine("3b: " + total);
 
+        total = input.Chunk(3).Sum(x =>
+            {
+                int value =  x[0].First(y =>
+                    (x[0].Count(a => y == a) >= 1) &&
+                    (x[1].Count(b => y == b) >= 1) &&
+                    (x[2].Count(c => y == c) >= 1));
+
+                return value >= 97 ? value - 96 : value - 38;
+            }
+        );
+        Console.WriteLine("3b (option 2): " + total);
     }
 }
