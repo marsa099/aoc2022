@@ -23,5 +23,24 @@ public static class Task4
                 total += 1;
         }
         Console.WriteLine("4a: " + total);
+
+
+        total = 0;
+
+        foreach (var line in input)
+        {
+            var parsedLine = re.Match(line);
+            var firstSection = Enumerable.Range(int.Parse(parsedLine.Groups[1].Value), 
+                                                 int.Parse(parsedLine.Groups[2].Value) - int.Parse(parsedLine.Groups[1].Value) + 1);
+            var secondSection = Enumerable.Range(int.Parse(parsedLine.Groups[3].Value), 
+                                                 int.Parse(parsedLine.Groups[4].Value) - int.Parse(parsedLine.Groups[3].Value) + 1);
+            var overlap1 = firstSection.Any(x => secondSection.Contains(x));
+            var overlap2 = secondSection.Any(x => firstSection.Contains(x));
+
+            if (overlap1 || overlap2)
+                total += 1;
+        }
+
+        Console.WriteLine("4b: " + total);
     }
 }
