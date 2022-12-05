@@ -49,7 +49,7 @@ public static class Task5
             else
             {
                 var parsedInstructions = reInstructions.Match(line);
-                RearrangeStack(parsedInstructions, stacks);
+                RearrangeStack5b(parsedInstructions, stacks);
             }
         }
         Console.WriteLine("5a: ....");
@@ -60,7 +60,7 @@ public static class Task5
 
     }
 
-    private static void RearrangeStack(Match parsedInstructions, List<StackObject> stacks)
+    private static void RearrangeStack5a(Match parsedInstructions, List<StackObject> stacks)
     {
         var fromStack = int.Parse(parsedInstructions.Groups[2].Value);
         var toStack = int.Parse(parsedInstructions.Groups[3].Value);
@@ -73,6 +73,29 @@ public static class Task5
             stackObjToMoveTo.Stack.Push(stackObjToMoveFrom.Stack.Pop());
 
     }
+
+    private static void RearrangeStack5b(Match parsedInstructions, List<StackObject> stacks)
+    {
+        var fromStack = int.Parse(parsedInstructions.Groups[2].Value);
+        var toStack = int.Parse(parsedInstructions.Groups[3].Value);
+        var amount = int.Parse(parsedInstructions.Groups[1].Value);
+
+        var stackObjToMoveFrom = stacks.Single(x => x.Id == fromStack);
+        var stackObjToMoveTo = stacks.Single(x => x.Id == toStack);
+
+        var tempStack = new Stack<char>();
+
+        for (int i = 0; i < amount; i++)
+        {
+            tempStack.Push(stackObjToMoveFrom.Stack.Pop());
+        }
+        for (int i = 0; i < amount; i++)
+        {
+            stackObjToMoveTo.Stack.Push(tempStack.Pop());
+        }
+
+    }
+
 
     private static void printStacks(List<StackObject> stacks)
     {
