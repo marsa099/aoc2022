@@ -1,4 +1,3 @@
-
 public class Node
 {
     public Node Parent { get; set; } = null!;
@@ -6,7 +5,6 @@ public class Node
     public string Name { get; set; } = string.Empty;
     public int Size { get; set; } = 0;
     public List<Node> Children { get; set; } = null!;
-
     public bool HasChildren => Children?.Any() ?? false;
     public bool HasParent => Parent == null ? false : true;
 }
@@ -78,11 +76,29 @@ public static class Task7
             }
         }
 
-        var result = GetNodes(startNode).Sum(x => x.Size);
+        var result = GetDirectories(startNode).Sum(x => x.Size);
         Console.WriteLine("7a: " + result);
+
+        int spaceNeeded = 30000000 - (70000000 - startNode.Size);
+        var dirToDelete = GetDirectories7b(startNode).Where(x => x.Size > spaceNeeded).OrderBy(x => x.Size).First();
+        Console.WriteLine($"7b: {dirToDelete.Size}");
     }
 
-    private static IEnumerable<Node> GetNodes(Node currentNode)
+
+    private static IEnumerable<Node> GetDirectories7b(Node currentNode)
+    {
+        if (currentNode.HasChildren)
+        {
+            foreach (var dir in currentNode.Children.Where(x => x.IsDirectory))
+            {
+                yield return dir;
+                foreach (var subdir in GetDirectories7b(dir))
+                    yield return subdir;
+            }
+        }
+    }
+
+    private static IEnumerable<Node> GetDirectories(Node currentNode)
     {
         if (currentNode.HasChildren)
         {
@@ -92,11 +108,8 @@ public static class Task7
                 {
                     yield return dir;
                 }
-                // else
-                // {
-                    foreach (var subnode in GetNodes(dir))
-                        yield return subnode;
-                // }
+                foreach (var subdir in GetDirectories(dir))
+                    yield return subdir;
             }
         }
     }
@@ -108,6 +121,4 @@ public static class Task7
         if (currentNode.HasParent)
             SetParentNodeSizes(currentNode.Parent, fileSize);
     }
-
-
 }
