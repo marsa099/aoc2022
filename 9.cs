@@ -6,7 +6,7 @@ public static class Task9
     // TODO: Take into account the positions the tail travels. Not only the final position for each move......
     public static void Execute()
     {
-        var input = File.ReadAllLines("inputs/input-9 copy.txt");
+        var input = File.ReadAllLines("inputs/input-9.txt");
 
         Point previousHeadPosition = new Point(0, 0);
         Point head = new Point(0, 0);
