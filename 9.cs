@@ -10,8 +10,14 @@ public static class Task9
 
         Point previousHeadPosition = new Point(0, 0);
         Point head = new Point(0, 0);
-        Point tail = new Point(0, 0);
-        List<Point> visitedPoints = new List<Point>{tail};
+        List<Point> tails = new List<Point>
+        {
+            new Point(0, 0), new Point(0, 0), new Point(0, 0),
+            new Point(0, 0), new Point(0, 0), new Point(0, 0),
+            new Point(0, 0), new Point(0, 0), new Point(0, 0)
+        };
+        List<Point> visitedPoints = new List<Point> { new Point(0, 0) };
+        List<Point> visitedPoints2 = new List<Point> { new Point(0, 0) };
 
         int steps = 0;
 
@@ -28,10 +34,22 @@ public static class Task9
                     {
                         Console.WriteLine("For loop #1");
                         head.Y = i;
-                        if (NeedToMoveTheTail(head, tail))
+                        if (NeedToMoveTheTail(head, tails[0]))
                         {
-                            tail = new Point(head.X, head.Y + 1);
-                            visitedPoints.Add(tail);
+                            tails[0] = new Point(head.X, head.Y + 1);
+                        
+
+                            for (int j = 1; j < tails.Count(); j++)
+                            {
+                                if (NeedToMoveTheTail(tails[j - 1], tails[j]))
+                                {
+                                    tails[j] = new Point(tails[j - 1].X, tails[j - 1].Y + 1);
+
+                                    if (j == 8)
+                                        visitedPoints.Add(tails[8]);
+                                }
+
+                            }
                         }
                     }
                     break;
@@ -40,10 +58,20 @@ public static class Task9
                     {
                         Console.WriteLine("For loop #2");
                         head.Y = i;
-                        if (NeedToMoveTheTail(head, tail))
+                        if (NeedToMoveTheTail(head, tails[0]))
                         {
-                            tail = new Point(head.X, head.Y - 1);
-                            visitedPoints.Add(tail);;
+                            tails[0] = new Point(head.X, head.Y - 1);
+                        
+
+                            for (int j = 1; j < tails.Count(); j++)
+                            {
+                                if (!NeedToMoveTheTail(tails[j - 1], tails[j]))
+                                {
+                                    tails[j] = new Point(tails[j - 1].X, tails[j - 1].Y - 1);
+                                    if (j == 8)
+                                        visitedPoints.Add(tails[8]);
+                                }
+                            }
                         }
                     }
                     break;
@@ -52,25 +80,46 @@ public static class Task9
                     {
                         Console.WriteLine("For loop #3");
                         head.X = i;
-                        if (NeedToMoveTheTail(head, tail))
+                        if (NeedToMoveTheTail(head, tails[0]))
                         {
-                            tail = new Point(head.X - 1, head.Y);
-                            visitedPoints.Add(tail);
+                            tails[0] = new Point(head.X - 1, head.Y);
+                        
+
+                            for (int j = 1; j < tails.Count(); j++)
+                            {
+                                if (NeedToMoveTheTail(tails[j - 1], tails[j]))
+                                {
+                                    tails[j] = new Point(tails[j -1].X - 1, tails[j - 1].Y);
+
+                                    if (j == 8)
+                                        visitedPoints.Add(tails[8]);
+                                }
+                            }
                         }
                     }
                     break;
                 case "L":
                     for (int i = head.X; i >= previousHeadPosition.X - steps; i--)
                     {
-                        Console.WriteLine("For loop #4");
                         head.X = i;
-                        if (NeedToMoveTheTail(head, tail))
+                        if (NeedToMoveTheTail(head, tails[0]))
                         {
-                            tail = new Point(head.X + 1, head.Y);
-                            visitedPoints.Add(tail);
+                            tails[0] = new Point(head.X + 1, head.Y);
+                        
+
+                            for (int j = 1; j < tails.Count(); j++)
+                            {
+                                if (NeedToMoveTheTail(tails[j - 1], tails[j]))
+                                {
+                                    tails[j] = new Point(tails[j -1].X + 1, tails[j - 1].Y);
+
+                                    if (j == 8)
+                                        visitedPoints.Add(tails[8]);
+                                }
+                            }
                         }
                     }
-                        
+
                     break;
                 default:
                     Console.WriteLine("This should not happen");
