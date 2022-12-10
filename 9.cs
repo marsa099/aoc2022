@@ -6,32 +6,41 @@ public static class Task9
     // TODO: Take into account the positions the tail travels. Not only the final position for each move......
     public static void Execute()
     {
-        var input = File.ReadAllLines("inputs/input-9.txt");
+        var input = File.ReadAllLines("inputs/input-9 copy.txt");
 
         List<Point> visitedPoints = new List<Point>();
         Point previousHeadPosition = new Point(0, 0);
         Point head = new Point(0, 0);
         Point tail = new Point(0, 0);
+        List<Point> tailMoves;
 
         int steps = 0;
 
         foreach (var line in input)
         {
-            previousHeadPosition = head;
-
+            tailMoves = new List<Point>();
             steps = int.Parse(line.Split(' ')[1].ToString());
             switch (line.Split(' ')[0])
             {
                 case "U":
+                    // 
+                    for (int i = head.Y; i > head.Y - steps; i--)
+                        tailMoves.Add(new Point(head.X, i));
                     head.Y -= steps;
                     break;
                 case "R":
+                    for (int i = head.X; i < head.X + steps; i++)
+                        tailMoves.Add(new Point(i, head.Y));
                     head.X += steps;
                     break;
                 case "L":
-                    head.X -= steps;;
+                    for (int i = head.X; i > head.X - steps; i--)
+                        tailMoves.Add(new Point(i, head.Y));
+                    head.X -= steps; ;
                     break;
                 case "D":
+                    for (int i = head.Y; i < head.Y + steps; i++)
+                        tailMoves.Add(new Point(head.X, i));
                     head.Y += steps;
                     break;
                 default:
@@ -41,8 +50,8 @@ public static class Task9
             // Move the tail if needed
             if (NeedToMoveTheTail(head, tail))
             {
-                tail = previousHeadPosition;
-                visitedPoints.Add(tail);
+                tail = tailMoves.Last();
+                visitedPoints.AddRange(tailMoves);
             }
         }
         Console.WriteLine("Visisted points: " + visitedPoints.Count());
