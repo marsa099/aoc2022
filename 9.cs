@@ -6,15 +6,12 @@ public static class Task9
     // TODO: Take into account the positions the tail travels. Not only the final position for each move......
     public static void Execute()
     {
-        var input = File.ReadAllLines("inputs/input-9-2testdata.txt");
+        var input = File.ReadAllLines("inputs/input-9.txt");
 
-        Point previousHeadPosition = new Point(0, 0);
-        Point head = new Point(0, 0);
-        List<Point> tails = new List<Point>
+        List<Point> knots = new List<Point>
         {
-            new Point(0, 0), new Point(0, 0), new Point(0, 0),
-            new Point(0, 0), new Point(0, 0), new Point(0, 0),
-            new Point(0, 0), new Point(0, 0), new Point(0, 0)
+            new Point(0, 0), new Point(0, 0), new Point(0, 0), new Point(0, 0), new Point(0, 0),
+            new Point(0, 0), new Point(0, 0), new Point(0, 0), new Point(0, 0), new Point(0, 0)
         };
         List<Point> visitedPoints = new List<Point> { new Point(0, 0) };
         List<Point> visitedPointsForFirstTail = new List<Point> { new Point(0, 0) };
@@ -28,81 +25,117 @@ public static class Task9
 
             for (int i = 0; i < steps; i++)
             {
-                previousHeadPosition = head;
                 switch (line.Split(' ')[0])
                 {
                     case "U":
-                        head.Y -= 1;
-                        if (NeedToMoveTheTail(head, tails[0]))
+                        knots[0] = new Point(knots[0].X, knots[0].Y - 1);
+
+                        for (int j = 1; j < knots.Count(); j++)
                         {
-                            tails[0] = new Point(head.X, head.Y + 1);
-                            visitedPointsForFirstTail.Add(tails[0]);
-
-                            for (int j = 1; j < tails.Count(); j++)
+                            if (NeedToMoveTheTail(knots[j - 1], knots[j]))
                             {
-                                if (NeedToMoveTheTail(tails[j - 1], tails[j]))
-                                {
-                                    tails[j] = new Point(tails[j - 1].X, tails[j - 1].Y + 1);
+                                var knotX = knots[j].X;
+                                if (knots[j - 1].X < knots[j].X)
+                                    knotX--;
+                                else if (knots[j - 1].X > knots[j].X)
+                                    knotX++;
 
-                                    if (j == 8)
-                                        visitedPoints.Add(tails[8]);
-                                }
+                                var knotY = knots[j].Y;
+                                if (knots[j - 1].Y < knots[j].Y)
+                                    knotY--;
+                                else if (knots[j - 1].Y > knots[j].Y)
+                                    knotY++;
+
+                                knots[j] = new Point(knotX, knotY);
+                                if (j == 1)
+                                    visitedPointsForFirstTail.Add(knots[j]);
+
+                                if (j == 9)
+                                    visitedPoints.Add(knots[j]);
                             }
                         }
                         break;
                     case "D":
-                        head.Y += 1;
-                        if (NeedToMoveTheTail(head, tails[0]))
-                        {
-                            tails[0] = new Point(head.X, head.Y - 1);
-                            visitedPointsForFirstTail.Add(tails[0]);
+                        knots[0] = new Point(knots[0].X, knots[0].Y + 1);
 
-                            for (int j = 1; j < tails.Count(); j++)
+                        for (int j = 1; j < knots.Count(); j++)
+                        {
+                            if (NeedToMoveTheTail(knots[j - 1], knots[j]))
                             {
-                                if (NeedToMoveTheTail(tails[j - 1], tails[j]))
-                                {
-                                    tails[j] = new Point(tails[j - 1].X, tails[j - 1].Y - 1);
-                                    if (j == 8)
-                                        visitedPoints.Add(tails[8]);
-                                }
+                                var knotX = knots[j].X;
+                                if (knots[j - 1].X < knots[j].X)
+                                    knotX--;
+                                else if (knots[j - 1].X > knots[j].X)
+                                    knotX++;
+
+                                var knotY = knots[j].Y;
+                                if (knots[j - 1].Y < knots[j].Y)
+                                    knotY--;
+                                else if (knots[j - 1].Y > knots[j].Y)
+                                    knotY++;
+
+                                knots[j] = new Point(knotX, knotY);
+                                if (j == 1)
+                                    visitedPointsForFirstTail.Add(knots[j]);
+
+                                if (j == 9)
+                                    visitedPoints.Add(knots[j]);
                             }
                         }
                         break;
                     case "R":
-                        head.X += 1;
-                        if (NeedToMoveTheTail(head, tails[0]))
+                        knots[0] = new Point(knots[0].X + 1, knots[0].Y);
+
+                        for (int j = 1; j < knots.Count(); j++)
                         {
-                            tails[0] = new Point(head.X - 1, head.Y);
-                            visitedPointsForFirstTail.Add(tails[0]);
-
-                            for (int j = 1; j < tails.Count(); j++)
+                            if (NeedToMoveTheTail(knots[j - 1], knots[j]))
                             {
-                                if (NeedToMoveTheTail(tails[j - 1], tails[j]))
-                                {
-                                    tails[j] = new Point(tails[j - 1].X - 1, tails[j - 1].Y);
+                                var knotX = knots[j].X;
+                                if (knots[j - 1].X < knots[j].X)
+                                    knotX--;
+                                else if (knots[j - 1].X > knots[j].X)
+                                    knotX++;
 
-                                    if (j == 8)
-                                        visitedPoints.Add(tails[8]);
-                                }
+                                var knotY = knots[j].Y;
+                                if (knots[j - 1].Y < knots[j].Y)
+                                    knotY--;
+                                else if (knots[j - 1].Y > knots[j].Y)
+                                    knotY++;
+
+                                knots[j] = new Point(knotX, knotY);
+                                if (j == 1)
+                                    visitedPointsForFirstTail.Add(knots[j]);
+
+                                if (j == 9)
+                                    visitedPoints.Add(knots[j]);
                             }
                         }
                         break;
                     case "L":
-                        head.X -= 1;
-                        if (NeedToMoveTheTail(head, tails[0]))
+                        knots[0] = new Point(knots[0].X - 1, knots[0].Y);
+
+                        for (int j = 1; j < knots.Count(); j++)
                         {
-                            tails[0] = new Point(head.X + 1, head.Y);
-                            visitedPointsForFirstTail.Add(tails[0]);
-
-                            for (int j = 1; j < tails.Count(); j++)
+                            if (NeedToMoveTheTail(knots[j - 1], knots[j]))
                             {
-                                if (NeedToMoveTheTail(tails[j - 1], tails[j]))
-                                {
-                                    tails[j] = new Point(tails[j - 1].X + 1, tails[j - 1].Y);
+                                var knotX = knots[j].X;
+                                if (knots[j - 1].X < knots[j].X)
+                                    knotX--;
+                                else if (knots[j - 1].X > knots[j].X)
+                                    knotX++;
 
-                                    if (j == 8)
-                                        visitedPoints.Add(tails[8]);
-                                }
+                                var knotY = knots[j].Y;
+                                if (knots[j - 1].Y < knots[j].Y)
+                                    knotY--;
+                                else if (knots[j - 1].Y > knots[j].Y)
+                                    knotY++;
+
+                                knots[j] = new Point(knotX, knotY);
+                                if (j == 1)
+                                    visitedPointsForFirstTail.Add(knots[j]);
+
+                                if (j == 9)
+                                    visitedPoints.Add(knots[j]);
                             }
                         }
                         break;
