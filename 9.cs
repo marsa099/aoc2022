@@ -6,7 +6,7 @@ public static class Task9
     // TODO: Take into account the positions the tail travels. Not only the final position for each move......
     public static void Execute()
     {
-        var input = File.ReadAllLines("inputs/input-9.txt");
+        var input = File.ReadAllLines("inputs/input-9-2testdata.txt");
 
         Point previousHeadPosition = new Point(0, 0);
         Point head = new Point(0, 0);
@@ -24,16 +24,15 @@ public static class Task9
         foreach (var line in input)
         {
             steps = int.Parse(line.Split(' ')[1].ToString());
-            previousHeadPosition = head;
             Console.Write($"Instruction: {line}: ");
 
-            switch (line.Split(' ')[0])
+            for (int i = 0; i < steps; i++)
             {
-                case "U":
-                    for (int i = head.Y; i >= previousHeadPosition.Y - steps; i--)
-                    {
-                        Console.WriteLine("For loop #1");
-                        head.Y = i;
+                previousHeadPosition = head;
+                switch (line.Split(' ')[0])
+                {
+                    case "U":
+                        head.Y -= 1;
                         if (NeedToMoveTheTail(head, tails[0]))
                         {
                             tails[0] = new Point(head.X, head.Y + 1);
@@ -48,18 +47,11 @@ public static class Task9
                                     if (j == 8)
                                         visitedPoints.Add(tails[8]);
                                 }
-                                else
-                                    break;
-
                             }
                         }
-                    }
-                    break;
-                case "D":
-                    for (int i = head.Y; i <= previousHeadPosition.Y + steps; i++)
-                    {
-                        Console.WriteLine("For loop #2");
-                        head.Y = i;
+                        break;
+                    case "D":
+                        head.Y += 1;
                         if (NeedToMoveTheTail(head, tails[0]))
                         {
                             tails[0] = new Point(head.X, head.Y - 1);
@@ -73,17 +65,11 @@ public static class Task9
                                     if (j == 8)
                                         visitedPoints.Add(tails[8]);
                                 }
-                                else
-                                    break;
                             }
                         }
-                    }
-                    break;
-                case "R":
-                    for (int i = head.X; i <= previousHeadPosition.X + steps; i++)
-                    {
-                        Console.WriteLine("For loop #3");
-                        head.X = i;
+                        break;
+                    case "R":
+                        head.X += 1;
                         if (NeedToMoveTheTail(head, tails[0]))
                         {
                             tails[0] = new Point(head.X - 1, head.Y);
@@ -98,16 +84,11 @@ public static class Task9
                                     if (j == 8)
                                         visitedPoints.Add(tails[8]);
                                 }
-                                else
-                                    break;
                             }
                         }
-                    }
-                    break;
-                case "L":
-                    for (int i = head.X; i >= previousHeadPosition.X - steps; i--)
-                    {
-                        head.X = i;
+                        break;
+                    case "L":
+                        head.X -= 1;
                         if (NeedToMoveTheTail(head, tails[0]))
                         {
                             tails[0] = new Point(head.X + 1, head.Y);
@@ -122,16 +103,13 @@ public static class Task9
                                     if (j == 8)
                                         visitedPoints.Add(tails[8]);
                                 }
-                                else
-                                    break;
                             }
                         }
-                    }
-
-                    break;
-                default:
-                    Console.WriteLine("This should not happen");
-                    break;
+                        break;
+                    default:
+                        Console.WriteLine("This should not happen");
+                        break;
+                }
             }
         }
         Console.WriteLine("Visisted points: " + visitedPoints.Count());
