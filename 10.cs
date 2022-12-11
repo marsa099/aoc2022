@@ -20,7 +20,6 @@ public static class Task10
                 case "addx": // Takes 2 cycles
                     CycleCount(2);
                     int value = int.Parse(line.Split(' ')[1]);
-                    //Console.WriteLine(value);
                     register += value;
                     break;
             }
@@ -33,11 +32,20 @@ public static class Task10
         for (int i = 0; i < increaseCount; i++)
         {
             ++cycles;
-            if (cycles == 20 || cycles == 60 || cycles == 100 || cycles == 140 || cycles == 180 || cycles == 220)
-            {
-                Console.WriteLine($"Register value at cycle {cycles}: {register}. Signal strength: {register * cycles}");
-                sum += (register * cycles);
-            }
+            PrintToScreen(((cycles-1) % 40), register);
         }
+    }
+
+    private static void PrintToScreen(int crtPos, int register)
+    {       
+        char value = '.';
+        
+        if (crtPos == register -1 || crtPos == register || crtPos == register +1)
+            value = '#';
+
+        if(crtPos == 39)
+            Console.WriteLine(value);
+        else
+            Console.Write(value);
     }
 }
