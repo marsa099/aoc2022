@@ -2,6 +2,7 @@ using System.Linq;
 
 public class Monkey
 {
+    public long Modulous;
     public int Id;
     public Queue<long> Items = new Queue<long>();
     public Func<long, long> Operation;
@@ -10,7 +11,7 @@ public class Monkey
     public long ThrowTo(long x) => Test(x) ? SendToIfTrue : SendToIfFalse;
     public int SendToIfTrue;
     public int SendToIfFalse;
-    public int InspectionCount;
+    public long InspectionCount;
 }
 
 public static class Task11
@@ -19,7 +20,7 @@ public static class Task11
 
     public static void Execute()
     {
-        var input = File.ReadAllLines("inputs/input-11-testdata.txt");
+        var input = File.ReadAllLines("inputs/input-11.txt");
 
         var x = new Monkey { Id = 1, Operation = (oldValue) => { return oldValue * 19; } };
 
@@ -48,7 +49,12 @@ public static class Task11
         }
 
         foreach (var monkey in monkeys)
+        {
             Console.WriteLine($"Monkey {monkey.Id}: SendToIfTrue: {monkey.SendToIfTrue}, SendToIfFalse: {monkey.SendToIfFalse}");
+            monkey.Modulous = monkeys.Select(x => x.TestDivision).Aggregate(1, (sum, x) => sum * x);
+        }
+
+        //return;
 
         List<long> inspectionCounts = new List<long>();
 
@@ -73,7 +79,7 @@ public static class Task11
 
                     //Console.WriteLine($"Will throw to {monkey.ThrowTo(itemToThrow)}");
 
-                    itemToThrow %= 96577;
+                    itemToThrow %= monkey.Modulous;
                     
                     var receiver = monkeys.Single(x => x.Id == monkey.ThrowTo(itemToThrow));
                     //receiver.InspectionCount++;
@@ -96,7 +102,12 @@ public static class Task11
 
         inspectionCounts.Sort();
 
-        Console.WriteLine(inspectionCounts[inspectionCounts.Count - 1]);
+        foreach(var jyrgen in inspectionCounts)
+        {
+            Console.WriteLine(jyrgen);
+        }
+
+        //Console.WriteLine(inspectionCounts[inspectionCounts.Count - 1]);
 
         long esteban = inspectionCounts[inspectionCounts.Count - 1] * inspectionCounts[inspectionCounts.Count - 2];
 
