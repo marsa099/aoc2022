@@ -50,9 +50,9 @@ public static class Task11
         foreach (var monkey in monkeys)
             Console.WriteLine($"Monkey {monkey.Id}: SendToIfTrue: {monkey.SendToIfTrue}, SendToIfFalse: {monkey.SendToIfFalse}");
 
-        List<int> inspectionCounts = new List<int>();
+        List<long> inspectionCounts = new List<long>();
 
-        int rounds = 20;
+        int rounds = 10000;
         for (int i = 0; i < rounds; i++)
         {
             foreach (var monkey in monkeys)
@@ -82,7 +82,7 @@ public static class Task11
                 }
             }
 
-            inspectionCounts = new List<int>();
+            inspectionCounts = new List<long>();
 
             Console.WriteLine($"=== After round {i + 1} ===");
             foreach (var monkey in monkeys)
@@ -98,7 +98,9 @@ public static class Task11
 
         Console.WriteLine(inspectionCounts[inspectionCounts.Count - 1]);
 
-        Console.WriteLine($"Monkey business: {inspectionCounts[inspectionCounts.Count - 1] * inspectionCounts[inspectionCounts.Count - 2]}");
+        long esteban = inspectionCounts[inspectionCounts.Count - 1] * inspectionCounts[inspectionCounts.Count - 2];
+
+        Console.WriteLine($"Monkey business: {esteban}");
 
     }
 
