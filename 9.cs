@@ -6,7 +6,7 @@ public static class Task9
     // TODO: Take into account the positions the tail travels. Not only the final position for each move......
     public static void Execute()
     {
-        var input = File.ReadAllLines("inputs/input-9.txt");
+        var input = File.ReadAllLines("inputs/input-9-2testdata.txt");
 
         Point previousHeadPosition = new Point(0, 0);
         Point head = new Point(0, 0);
@@ -17,7 +17,6 @@ public static class Task9
             new Point(0, 0), new Point(0, 0), new Point(0, 0)
         };
         List<Point> visitedPoints = new List<Point> { new Point(0, 0) };
-        List<Point> visitedPoints2 = new List<Point> { new Point(0, 0) };
 
         int steps = 0;
 
@@ -37,7 +36,6 @@ public static class Task9
                         if (NeedToMoveTheTail(head, tails[0]))
                         {
                             tails[0] = new Point(head.X, head.Y + 1);
-                        
 
                             for (int j = 1; j < tails.Count(); j++)
                             {
@@ -65,7 +63,7 @@ public static class Task9
 
                             for (int j = 1; j < tails.Count(); j++)
                             {
-                                if (!NeedToMoveTheTail(tails[j - 1], tails[j]))
+                                if (NeedToMoveTheTail(tails[j - 1], tails[j]))
                                 {
                                     tails[j] = new Point(tails[j - 1].X, tails[j - 1].Y - 1);
                                     if (j == 8)
@@ -83,7 +81,6 @@ public static class Task9
                         if (NeedToMoveTheTail(head, tails[0]))
                         {
                             tails[0] = new Point(head.X - 1, head.Y);
-                        
 
                             for (int j = 1; j < tails.Count(); j++)
                             {
