@@ -8,6 +8,7 @@ public class Monkey
     public int ThrowTo(int x) => Test(x) ? SendToIfTrue : SendToIfFalse;
     public int SendToIfTrue;
     public int SendToIfFalse;
+    public int InspectionCount;
 }
 
 public static class Task11
@@ -42,28 +43,52 @@ public static class Task11
             };
             monkeys.Add(parsedMonkey);
 
-            foreach(var monkey in monkeys)
+        }
+
+        int rounds = 20;
+        for (int i = 0; i < rounds; i++)
+        {
+            foreach (var monkey in monkeys)
             {
-                if (!monkey.Items.TryDequeue(out int itemToThrow))
-                    continue;
+                Console.WriteLine($"MONKEY {monkey.Id}");
+                while (monkey.Items.TryDequeue(out int itemToThrow))
+                {
+                    // Increase worryLevel on item
+                    Console.WriteLine($"Before inspect: {itemToThrow}");
+                    itemToThrow = monkey.Operation(itemToThrow);
+                    Console.WriteLine($"Inspect: {itemToThrow}");
+                    monkey.InspectionCount++;
+                    // No worries, decrease worry level
+                    itemToThrow /= 3;
+                    Console.WriteLine($"No worries: {itemToThrow}");
 
-                // Increase worryLevel on item
-                Console.WriteLine($"Before inspect: {itemToThrow}");
-                itemToThrow = monkey.Operation(itemToThrow);
-                Console.WriteLine($"Inspect: {itemToThrow}");
-                // No worries, decrease worry level
-                itemToThrow /= 3;
-                Console.WriteLine($"No worries: {itemToThrow}");
+                    monkey.Test(itemToThrow);
 
-                monkey.Test(itemToThrow);
+                    Console.WriteLine($"Will throw to {monkey.ThrowTo(itemToThrow)}");
 
-                Console.WriteLine($"Will throw to {monkey.ThrowTo(itemToThrow)}");
-
+                    monkeys.Single(x => x.Id == monkey.ThrowTo(itemToThrow)).Items.Enqueue(itemToThrow);
+                }
             }
 
-            //Console.WriteLine($"'{monkeyId}' '{string.Join(", ", items)}' operation on 3 {operation(3)}");
         }
+
+        //Console.WriteLine($"'{monkeyId}' '{string.Join(", ", items)}' operation on 3 {operation(3)}");
+
+        List<int> inspectionCounts = new List<int>();
+
         Console.WriteLine("11a: ");
+        foreach(var monkey in monkeys)
+        {
+            Console.WriteLine($"Monkey {monkey.Id} inspected items {monkey.InspectionCount} times");
+            inspectionCounts.Add(monkey.InspectionCount);
+        }
+
+        inspectionCounts.Sort();
+
+        Console.WriteLine(inspectionCounts[inspectionCounts.Count -1]);
+
+        Console.WriteLine($"Monkey business: {inspectionCounts[inspectionCounts.Count -1] * inspectionCounts[inspectionCounts.Count -2]}");
+
     }
 
 
