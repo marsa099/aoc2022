@@ -17,7 +17,7 @@ public static class Task11
 
     public static void Execute()
     {
-        var input = File.ReadAllLines("inputs/input-11-testdata.txt");
+        var input = File.ReadAllLines("inputs/input-11.txt");
 
         var x = new Monkey { Id = 1, Operation = (oldValue) => { return oldValue * 19; } };
 
@@ -69,7 +69,6 @@ public static class Task11
                     monkeys.Single(x => x.Id == monkey.ThrowTo(itemToThrow)).Items.Enqueue(itemToThrow);
                 }
             }
-
         }
 
         //Console.WriteLine($"'{monkeyId}' '{string.Join(", ", items)}' operation on 3 {operation(3)}");
@@ -90,11 +89,6 @@ public static class Task11
         Console.WriteLine($"Monkey business: {inspectionCounts[inspectionCounts.Count -1] * inspectionCounts[inspectionCounts.Count -2]}");
 
     }
-
-
-
-
-
 
     private static Func<int, int> ParseOperation(string operation)
     {
