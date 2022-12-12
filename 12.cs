@@ -37,23 +37,23 @@ public static class Task12
             }
         }
     }
-    private static void AddNeighbours(IEnumerable<Node> nodes)
+    private static List<Node> AddNeighbours(Node node, IEnumerable<Node> nodes)
     {
-        foreach (var node in nodes)
+        var neighbours = new List<Node>();
+        int count = 0;
+        foreach ((int x, int y) in Adjacent)
         {
-            foreach ((int x, int y) in Adjacent)
-            {
-                var child = nodes.SingleOrDefault(neighbour => neighbour.XPos == node.XPos + x &&
-                                                               neighbour.YPos == node.YPos + y); //&&
-                                                               //node.Value <= node.Value + 1);
-                //9 <= 8 + 1 = true
-                //9 <= 7 + 1 = false
-                //9 <= 999 = true
+            var child = nodes.FirstOrDefault(neighbour => neighbour.XPos == node.XPos + x &&
+                                                           neighbour.YPos == node.YPos + y); //&&
+                                                                                             //node.Value <= node.Value + 1);
+                                                                                             //9 <= 8 + 1 = true
+                                                                                             //9 <= 7 + 1 = false
+                                                                                             //9 <= 999 = true
 
-                if (child != null)
-                    node.Neighbours.Add(child);
-            }
+            if (child != null)
+                neighbours.Add(child);
         }
+        return neighbours;
     }
 
     public static void Execute()
@@ -66,12 +66,13 @@ public static class Task12
         // 1. Read and parse the values
         // 2. Add the neigbours
         // 3. Do the magic
-        Console.WriteLine("asd");
+        Console.Write("Parsing ...");
         var nodes = ParseData();
-        Console.WriteLine("asd " + nodes.Count());
-        AddNeighbours(nodes);
-        Console.WriteLine("asd asdasda" + nodes.Count());
-        foreach (var node in nodes.Take(10))
+        Console.WriteLine(" DONE");
+
+        var neighbours = AddNeighbours(nodes.First(), nodes);
+        
+        foreach (var node in neighbours)
             Console.WriteLine($"{node.Value} {string.Join(", ", node.Neighbours.Select(x => x.Value))}");
 
 
