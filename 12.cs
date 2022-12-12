@@ -68,7 +68,7 @@ public static class Task12
         // 3. Do the magic
         Console.Write("Parsing ...");
         var nodes = ParseData();
-        Console.WriteLine(" DONE");
+        Console.WriteLine(" TEST");
 
         var neighbours = AddNeighbours(nodes.First(), nodes);
         
