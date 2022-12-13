@@ -25,7 +25,7 @@ public static class Task12
     private static List<Node> Nodes = new List<Node>();
     private static IEnumerable<Node> ParseData()
     {
-        var input = File.ReadAllLines("inputs/input-12.txt");
+        var input = File.ReadAllLines("inputs/input-12-testdata.txt");
 
         int id = 0;
         for (int yPos = 0; yPos < input.Count(); yPos++)
@@ -63,8 +63,14 @@ public static class Task12
         Nodes = ParseData().ToList(); ;
         var goal = Nodes.First(x => x.Goal);
         var start = Nodes.First(x => x.Start);
-        var distance = FindShortestRoute(goal, start);
-        Console.WriteLine(distance);
+        List<int> distances = new();
+        foreach (var node in Nodes.Where(x => x.Value == 'a'))
+        {
+            var distance = FindShortestRoute(goal, node);
+            distances.Add(distance);
+        }
+
+        Console.WriteLine(distances.Min());
     }
 
     public static int FindShortestRoute(Node goal, Node start)
@@ -100,6 +106,11 @@ public static class Task12
             }
         }
 
+        if (!previous.ContainsKey(goal))
+        {
+            Console.WriteLine("No path found");
+            return Int32.MaxValue;
+        }
 
         while (goal != null)
         {
